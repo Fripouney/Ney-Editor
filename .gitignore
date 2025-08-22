@@ -1,0 +1,3 @@
+*.txt
+*.ney
+__pycache__/
