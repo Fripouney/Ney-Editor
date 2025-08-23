@@ -1,16 +1,21 @@
+import tkinter as tk
 import json
 from tkinter import filedialog, messagebox
 from config import Config
-from util import Util
-import tkinter as tk
 
 class FileHandling:
+    """
+    Class for handling file operations in the text editor
+    """
     @staticmethod
     def save_file(editor, event=None):
+        """
+        Save the current file or prompt for a new file location if file has never been saved
+        """
         if editor.current_file:
             if editor.current_file.endswith(".ney"):
                 content = editor.text_area.dump(1.0, tk.END, tag=True, text=True)
-                
+
                 json_content = [
                     {"key": key, "value": value, "index": index}
                     for key, value, index in content
@@ -25,17 +30,26 @@ class FileHandling:
             Config.set_status_bar(editor.status_bar,f"Fichier enregistré : {editor.current_file}")
 
         else:
-            editor.save_as()
+            FileHandling.save_as(editor)
 
     @staticmethod
     def save_as(editor, event=None):
+        """
+        Prompt the user to select a file location to save the current file
+        """
         file = filedialog.asksaveasfile(
             defaultextension=".ney",
             filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
         )
         if not file:
-            messagebox.showerror("Une erreur est survenue", "Le fichier n'a pas pu être enregistré !")
-            Config.set_status_bar(editor.status_bar, "ERREUR : Le fichier n'a pas pu être enregistré !")
+            messagebox.showerror(
+                "Une erreur est survenue",
+                "Le fichier n'a pas pu être enregistré !"
+            )
+            Config.set_status_bar(
+                editor.status_bar,
+                "ERREUR : Le fichier n'a pas pu être enregistré !"
+            )
             return
 
         editor.current_file = file.name
@@ -45,6 +59,10 @@ class FileHandling:
 
     @staticmethod
     def open_file(editor, event=None):
+        """
+        Prompt the user to select a file to open
+        Supported formats are .ney and .txt
+        """
         file = filedialog.askopenfile(
             defaultextension=".ney",
             filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
@@ -52,17 +70,29 @@ class FileHandling:
         )
 
         if not file:
-            messagebox.showerror("Une erreur est survenue", "Le fichier n'a pas pu être ouvert !")
-            Config.set_status_bar(editor.status_bar, "ERREUR : Le fichier n'a pas pu être ouvert !")
+            messagebox.showerror(
+                "Une erreur est survenue",
+                "Le fichier n'a pas pu être ouvert !"
+            )
+            Config.set_status_bar(
+                editor.status_bar,
+                "ERREUR : Le fichier n'a pas pu être ouvert !"
+            )
             return
 
         editor.text_area.delete(1.0, tk.END)
         editor.current_file = file.name
 
         try:
-            if not (Util.is_valid_file_format(editor.current_file)):
-                messagebox.showerror("Une erreur est survenue", "Le fichier n'est pas au format .ney ou .txt !")
-                Config.set_status_bar(editor.status_bar, "ERREUR : Le fichier n'est pas au format .ney ou .txt !")
+            if not (FileHandling.is_valid_file_format(editor.current_file)):
+                messagebox.showerror(
+                    "Une erreur est survenue",
+                    "Le fichier n'est pas au format .ney ou .txt !"
+                )
+                Config.set_status_bar(
+                    editor.status_bar,
+                    "ERREUR : Le fichier n'est pas au format .ney ou .txt !"
+                )
                 return
 
             if editor.current_file.endswith(".ney"):
@@ -73,7 +103,7 @@ class FileHandling:
                     key = item['key']
                     value = item['value']
                     index = item['index']
-                    
+
                     if key == "text":
                         editor.text_area.insert(index, value)
                     elif key == "tagon":
@@ -86,7 +116,10 @@ class FileHandling:
                 editor.text_area.insert(tk.END, content)
 
         except (json.JSONDecodeError, KeyError):
-            messagebox.showerror("Erreur de lecture", "Le fichier .ney est corrompu ou mal formaté.")
+            messagebox.showerror(
+                "Erreur de lecture",
+                "Le fichier .ney est corrompu ou mal formaté."
+            )
             editor.current_file = None
 
         finally:
@@ -95,9 +128,19 @@ class FileHandling:
 
     @staticmethod
     def new_file(editor, event=None):
+        """
+        Creates a brand new blank file.
+        """
         confirm = messagebox.askyesno("Enregistrer ?", "Enregistrer les modifications ?")
         if confirm:
             FileHandling.save_file(editor)
 
         editor.text_area.delete(1.0, tk.END)
         editor.current_file = None
+
+    @staticmethod
+    def is_valid_file_format(file_name):
+        """
+        Check if the file format is valid
+        """
+        return file_name.endswith(".ney") or file_name.endswith(".txt")
