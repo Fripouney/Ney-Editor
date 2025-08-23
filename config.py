@@ -1,13 +1,6 @@
 import tkinter as tk
 
 class Config:
-    # @staticmethod
-    # def add_editor_bindings(root):
-    #     root.bind("<Control-s>", root.save_file)
-    #     root.bind("<Control-o>", root.open_file)
-    #     root.bind("<Control-Shift-s>", root.save_as)
-    #     root.bind("<Control-n>", root.new_file)
-
     @staticmethod
     def add_text_area_bindings(text_area):
         text_area.bind("<Control-b>", lambda event: Config.toggle_tag(text_area, "bold"))

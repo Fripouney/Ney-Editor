@@ -1,5 +1,3 @@
-import tkinter as tk
-
 class Util:
     @staticmethod
     def is_valid_file_format(file_name):
