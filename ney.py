@@ -3,8 +3,11 @@ from config import Config
 from file_handling import FileHandling
 
 class NeyEditor:
-    """
-    Main class
+    A text editor application for .ney and .txt files with formatting capabilities.
+
+    This class builds the main window, text area, menu bar, and status bar,
+    and provides file handling and text formatting features for editing and managing
+    .ney and .txt files.
     """
     def __init__(self):
         """
