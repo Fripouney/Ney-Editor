@@ -46,11 +46,14 @@ class TestNey:
         """
         menu = self.editor.file_menu()
         assert isinstance(menu, tk.Menu)
-        
+
         end_index = menu.index("end")
         labels = [
             menu.entrycget(i, "label") if menu.type(i) != "separator" else None
             for i in range(1, end_index + 1) if end_index is not None
         ] if end_index is not None else []
-        expected_labels = ["Nouveau", "Ouvrir", None, "Enregistrer", "Enregistrer sous", None, "Quitter"]
+        expected_labels = [
+            "Nouveau", "Ouvrir", None, "Enregistrer",
+            "Enregistrer sous", None, "Quitter"
+        ]
         assert labels == expected_labels

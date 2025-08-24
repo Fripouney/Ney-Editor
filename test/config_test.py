@@ -1,4 +1,3 @@
-import pytest
 import tkinter as tk
 from config import Config
 
@@ -44,7 +43,7 @@ class TestConfig:
 
         text_area = tk.Text(self.root)
         text_area.pack()
-        
+
         text_area.tag_remove("sel", "1.0", tk.END)
         text_area.insert("1.0", "whatever")
         text_area.tag_add("sel", "1.0", "1.7")

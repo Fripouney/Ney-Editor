@@ -83,5 +83,4 @@ if __name__ == "__main__":
     editor.build_menu_bar()
     editor.build_text_area()
     editor.build_status_bar()
-
     editor.root.mainloop()
