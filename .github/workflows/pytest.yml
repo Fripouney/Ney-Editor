@@ -30,4 +30,4 @@ jobs:
 
     - name: Run tests
       run: |
-        xvfb-run PYTHONPATH=/home/runner/work/Ney-Editor/Ney-Editor pytest
+        xvfb-run PYTHONPATH=. pytest
