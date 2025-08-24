@@ -1,3 +1,4 @@
 *.txt
 *.ney
 __pycache__/
+.venv/
