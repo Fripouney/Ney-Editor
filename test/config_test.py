@@ -5,15 +5,16 @@ class TestConfig:
     """
     This tests all of the methods in the Config class
     """
-
-    root = tk.Tk()
+    def root(self):
+        return tk.Tk()
 
     def test_add_text_area_bindings(self):
         """
         Tests the add_text_area_bindings method
         """
 
-        text_area = tk.Text(self.root)
+        root = self.root()
+        text_area = tk.Text(root)
         text_area.pack()
 
         Config.add_text_area_bindings(text_area)
@@ -22,12 +23,15 @@ class TestConfig:
         assert "<Control-Key-i>" in text_area.bind()
         assert "<Control-Key-u>" in text_area.bind()
 
+        root.destroy()
+
     def test_config_tags(self):
         """
         Tests the config_tags method
         """
 
-        text_area = tk.Text(self.root)
+        root = self.root()
+        text_area = tk.Text(root)
         text_area.pack()
 
         Config.config_tags(text_area)
@@ -36,12 +40,15 @@ class TestConfig:
         assert "italic" in text_area.tag_names()
         assert "underline" in text_area.tag_names()
 
+        root.destroy()
+
     def test_toggle_tag(self):
         """
         Tests the toggle_tag method
         """
 
-        text_area = tk.Text(self.root)
+        root = self.root()
+        text_area = tk.Text(root)
         text_area.pack()
 
         text_area.tag_remove("sel", "1.0", tk.END)
@@ -54,15 +61,20 @@ class TestConfig:
         Config.toggle_tag(text_area, "bold")
         assert "bold" not in text_area.tag_names("1.0")
 
+        root.destroy()
+
     def test_set_status_bar(self):
         """
         Tests the set_status_bar method
         """
 
-        status_bar = tk.Text(self.root, height=1)
+        root = self.root()
+        status_bar = tk.Text(root, height=1)
         status_bar.pack(fill=tk.X, side=tk.BOTTOM)
 
         Config.set_status_bar(status_bar, "whatever")
 
         assert status_bar.get("1.0", tk.END).strip() == "whatever"
         assert status_bar.cget("state") == "disabled"
+
+        root.destroy()
