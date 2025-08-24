@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.12"]
-        
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -30,4 +30,4 @@ jobs:
 
     - name: Run tests
       run: |
-        xvfb-run pytest
+        xvfb-run PYTHONPATH=/home/runner/work/Ney-Editor/Ney-Editor pytest
