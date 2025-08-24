@@ -84,7 +84,7 @@ class FileHandling:
         editor.current_file = file.name
 
         try:
-            if not (FileHandling.is_valid_file_format(editor.current_file)):
+            if not FileHandling.is_valid_file_format(editor.current_file):
                 messagebox.showerror(
                     "Une erreur est survenue",
                     "Le fichier n'est pas au format .ney ou .txt !"
