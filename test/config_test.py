@@ -6,6 +6,9 @@ class TestConfig:
     This tests all of the methods in the Config class
     """
     def root(self):
+        """
+        Sets up the root Tkinter window for testing
+        """
         return tk.Tk()
 
     def test_add_text_area_bindings(self):

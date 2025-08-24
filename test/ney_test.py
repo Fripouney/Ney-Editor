@@ -7,6 +7,9 @@ class TestNey:
     """
 
     def editor(self):
+        """
+        Sets up the NeyEditor instance for testing
+        """
         return NeyEditor()
 
     def test_add_editor_bindings(self):
