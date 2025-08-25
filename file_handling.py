@@ -43,7 +43,6 @@ class FileHandling:
         Prompt the user to select a file location to save the current file
         """
         file = filedialog.asksaveasfile(
-            defaultextension=".ney",
             filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
         )
         if not file:
