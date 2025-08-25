@@ -42,14 +42,6 @@ class FileHandling:
             filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
         )
         if not file:
-            messagebox.showerror(
-                "Une erreur est survenue",
-                "Le fichier n'a pas pu être enregistré !"
-            )
-            Config.set_status_bar(
-                editor.status_bar,
-                "ERREUR : Le fichier n'a pas pu être enregistré !"
-            )
             return
 
         editor.current_file = file.name
@@ -70,32 +62,24 @@ class FileHandling:
         )
 
         if not file:
+            return
+
+        if not FileHandling.is_valid_file_format(file.name):
             messagebox.showerror(
                 "Une erreur est survenue",
-                "Le fichier n'a pas pu être ouvert !"
+                "Le fichier n'est pas au format .ney ou .txt !"
             )
             Config.set_status_bar(
                 editor.status_bar,
-                "ERREUR : Le fichier n'a pas pu être ouvert !"
+                "ERREUR : Le fichier n'est pas au format .ney ou .txt !"
             )
             return
 
         editor.text_area.delete(1.0, tk.END)
         editor.current_file = file.name
 
-        try:
-            if not FileHandling.is_valid_file_format(editor.current_file):
-                messagebox.showerror(
-                    "Une erreur est survenue",
-                    "Le fichier n'est pas au format .ney ou .txt !"
-                )
-                Config.set_status_bar(
-                    editor.status_bar,
-                    "ERREUR : Le fichier n'est pas au format .ney ou .txt !"
-                )
-                return
-
-            if editor.current_file.endswith(".ney"):
+        if editor.current_file.endswith(".ney"):
+            try:
                 content = json.load(file)
                 content.sort(key=lambda item: item['key'] != 'text')
 
@@ -111,20 +95,20 @@ class FileHandling:
                     elif key == "tagoff":
                         editor.text_area.tag_remove(value, index, tk.END)
 
-            else:
-                content = file.read()
-                editor.text_area.insert(tk.END, content)
+            except (json.JSONDecodeError, KeyError):
+                messagebox.showerror(
+                    "Erreur de lecture",
+                    "Le fichier .ney est corrompu ou mal formaté."
+                )
+                editor.current_file = None
+                return
 
-        except (json.JSONDecodeError, KeyError):
-            messagebox.showerror(
-                "Erreur de lecture",
-                "Le fichier .ney est corrompu ou mal formaté."
-            )
-            editor.current_file = None
+        else:
+            content = file.read()
+            editor.text_area.insert(tk.END, content)
 
-        finally:
-            Config.set_status_bar(editor.status_bar, f"Fichier ouvert : {editor.current_file}")
-            file.close()
+        Config.set_status_bar(editor.status_bar, f"Fichier ouvert : {editor.current_file}")
+        file.close()
 
     @staticmethod
     def new_file(editor, event=None):
