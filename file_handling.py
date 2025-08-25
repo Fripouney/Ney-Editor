@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 import json
 from tkinter import filedialog, messagebox
@@ -27,7 +28,10 @@ class FileHandling:
                 with open(editor.current_file, 'w') as file:
                     file.write(editor.text_area.get(1.0, tk.END))
 
-            Config.set_status_bar(editor.status_bar,f"Fichier enregistré : {FileHandling.get_file_name(editor)}")
+            Config.set_status_bar(
+                editor.status_bar,
+                f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
+            )
 
         else:
             FileHandling.save_as(editor)
@@ -48,7 +52,10 @@ class FileHandling:
         file.close()
         FileHandling.save_file(editor)
         editor.root.title(f"Ney editor - {FileHandling.get_file_name(editor)}")
-        Config.set_status_bar(editor.status_bar, f"Fichier enregistré : {FileHandling.get_file_name(editor)}")
+        Config.set_status_bar(
+            editor.status_bar,
+            f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
+        )
 
     @staticmethod
     def open_file(editor, event=None):
@@ -86,7 +93,7 @@ class FileHandling:
                 "ERREUR : Le fichier n'a pas pu être ouvert (Nom incorrect)"
             )
             return
-        
+
         editor.current_file = file.name
 
         if editor.current_file.endswith(".ney"):
@@ -120,7 +127,10 @@ class FileHandling:
             editor.text_area.delete(1.0, tk.END)
             editor.text_area.insert(tk.END, content)
 
-        Config.set_status_bar(editor.status_bar, f"Fichier ouvert : {FileHandling.get_file_name(editor)}")
+        Config.set_status_bar(
+            editor.status_bar,
+            f"Fichier ouvert : {FileHandling.get_file_name(editor)}"
+        )
         editor.root.title(f"Ney editor - {FileHandling.get_file_name(editor)}")
         file.close()
 
@@ -143,10 +153,10 @@ class FileHandling:
         Check if the file format is valid
         """
         return file_name.endswith(".ney") or file_name.endswith(".txt")
-    
+
     @staticmethod
     def get_file_name(editor):
         """
         Get the current file name without full path
         """
-        return editor.current_file.split("/")[-1] if editor.current_file else "Sans titre"
+        return os.path.basename(editor.current_file) if editor.current_file else "Sans titre"
