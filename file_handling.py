@@ -80,6 +80,12 @@ class FileHandling:
                 "Une erreur est survenue",
                 "Le fichier n'a pas pu être ouvert (Nom incorrect)"
             )
+            Config.set_status_bar(
+                editor.status_bar,
+                "ERREUR : Le fichier n'a pas pu être ouvert (Nom incorrect)"
+            )
+            return
+        
         editor.current_file = file.name
 
         if editor.current_file.endswith(".ney"):
