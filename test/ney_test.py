@@ -33,7 +33,7 @@ class TestNey:
         editor = self.editor()
         editor.build_root()
         editor.root.update_idletasks()
-        assert editor.root.title() == "Ney Editor"
+        assert editor.root.title() == "Ney Editor - Sans titre"
         assert editor.root.geometry().split("+")[0] == "800x600"
 
     def test_build_menu_bar(self):
