@@ -75,13 +75,18 @@ class FileHandling:
             )
             return
 
-        editor.text_area.delete(1.0, tk.END)
+        if file.name is None:
+            messagebox.showerror(
+                "Une erreur est survenue",
+                "Le fichier n'a pas pu être ouvert (Nom incorrect)"
+            )
         editor.current_file = file.name
 
         if editor.current_file.endswith(".ney"):
             try:
                 content = json.load(file)
                 content.sort(key=lambda item: item['key'] != 'text')
+                editor.text_area.delete(1.0, tk.END)
 
                 for item in content:
                     key = item['key']
@@ -105,6 +110,7 @@ class FileHandling:
 
         else:
             content = file.read()
+            editor.text_area.delete(1.0, tk.END)
             editor.text_area.insert(tk.END, content)
 
         Config.set_status_bar(editor.status_bar, f"Fichier ouvert : {editor.current_file}")
