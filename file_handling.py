@@ -16,6 +16,7 @@ class FileHandling:
         if editor.current_file:
             if editor.current_file.endswith(".ney"):
                 content = editor.text_area.dump(1.0, tk.END, tag=True, text=True)
+                content.pop(-1) # Remove the extra /n
 
                 json_content = [
                     {"key": key, "value": value, "index": index}
