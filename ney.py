@@ -37,7 +37,7 @@ class NeyEditor:
         """
         Build the root window for the editor
         """
-        self.root.title("Ney Editor")
+        self.root.title(f"Ney Editor - {FileHandling.get_file_name(self)}")
         self.root.geometry("800x600")
 
     def build_menu_bar(self):
