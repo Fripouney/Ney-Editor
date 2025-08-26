@@ -15,7 +15,7 @@ class NeyEditor:
         Initialize the main components of the editor
         """
         self.root = tk.Tk()
-        self.text_area = tk.Text(self.root, font="Arial")
+        self.text_area = tk.Text(self.root, font="Arial", wrap=tk.WORD, undo=True)
         self.status_bar = tk.Text(self.root, height=1, bd=0, bg="lightgrey", state="disabled")
         self.current_file = None
 
@@ -47,6 +47,29 @@ class NeyEditor:
         menu_bar = tk.Menu(self.root)
         menu_bar.add_cascade(label="Fichier", menu=self.file_menu())
         self.root.config(menu=menu_bar)
+
+    def build_toolbar(self):
+        """
+        Build the editor toolbar
+        This will have buttons for bold, italic and underline
+        """
+        toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED)
+        bold_btn = tk.Button(
+            toolbar, text="Bold",
+            command=lambda: Config.toggle_tag(self.text_area, "bold")
+        )
+        italic_btn = tk.Button(
+            toolbar, text="Italic",
+            command=lambda: Config.toggle_tag(self.text_area, "italic")
+        )
+        underline_btn = tk.Button(
+            toolbar, text="Underline",
+            command=lambda: Config.toggle_tag(self.text_area, "underline")
+        )
+        bold_btn.pack(side=tk.LEFT, padx=2, pady=2)
+        italic_btn.pack(side=tk.LEFT, padx=2, pady=2)
+        underline_btn.pack(side=tk.LEFT, padx=2, pady=2)
+        toolbar.pack(side=tk.TOP, fill=tk.X)
 
     def build_text_area(self):
         """
@@ -81,6 +104,7 @@ if __name__ == "__main__":
     editor.add_editor_bindings()
     editor.build_root()
     editor.build_menu_bar()
+    editor.build_toolbar()
     editor.build_text_area()
     editor.build_status_bar()
     editor.root.mainloop()

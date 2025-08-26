@@ -49,6 +49,19 @@ class TestNey:
         menu = editor.root.nametowidget(menu_name)
         assert isinstance(menu, tk.Menu)
 
+    def test_build_toolbar(self):
+        """
+        Tests the build_toolbar method
+        """
+
+        editor = self.editor()
+        editor.build_toolbar()
+        toolbar = editor.root.nametowidget(editor.root.winfo_children()[2])
+        assert isinstance(toolbar, tk.Frame)
+        assert toolbar.winfo_children()[0].cget("text") == "Bold"
+        assert toolbar.winfo_children()[1].cget("text") == "Italic"
+        assert toolbar.winfo_children()[2].cget("text") == "Underline"
+
     def test_file_menu(self):
         """
         Tests the file_menu method
