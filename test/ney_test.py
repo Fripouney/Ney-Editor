@@ -23,7 +23,7 @@ class TestNey:
         assert "<Control-Key-n>" in editor.root.bind()
         assert "<Control-Key-s>" in editor.root.bind()
         assert "<Control-Key-o>" in editor.root.bind()
-        assert "<Control-Shift-Key-s>" in editor.root.bind()
+        assert "<Control-Key-S>" in editor.root.bind()
 
     def test_build_root(self):
         """
