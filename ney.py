@@ -56,16 +56,19 @@ class NeyEditor:
         """
         toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED)
         bold_btn = tk.Button(
-            toolbar, text="Bold",
-            command=lambda: Config.toggle_tag(self.text_area, "bold")
+            toolbar, text="B",
+            command=lambda: Config.toggle_tag(self.text_area, "bold"),
+            font=("Arial", 10, "bold")
         )
         italic_btn = tk.Button(
-            toolbar, text="Italic",
-            command=lambda: Config.toggle_tag(self.text_area, "italic")
+            toolbar, text="I",
+            command=lambda: Config.toggle_tag(self.text_area, "italic"),
+            font=("Arial", 10, "italic")
         )
         underline_btn = tk.Button(
-            toolbar, text="Underline",
-            command=lambda: Config.toggle_tag(self.text_area, "underline")
+            toolbar, text="U",
+            command=lambda: Config.toggle_tag(self.text_area, "underline"),
+            font=("Arial", 10, "underline")
         )
         bold_btn.pack(side=tk.LEFT, padx=2, pady=2)
         italic_btn.pack(side=tk.LEFT, padx=2, pady=2)
