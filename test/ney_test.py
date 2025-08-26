@@ -49,6 +49,30 @@ class TestNey:
         menu = editor.root.nametowidget(menu_name)
         assert isinstance(menu, tk.Menu)
 
+    def test_build_toolbar(self):
+        """
+        Tests the build_toolbar method
+        """
+
+        editor = self.editor()
+        editor.build_toolbar()
+        # Find the toolbar frame by looking for a tk.Frame with the expected buttons
+        toolbar = None
+        for child in editor.root.winfo_children():
+            if isinstance(child, tk.Frame):
+                children = child.winfo_children()
+                if (len(children) >= 3 and
+                    children[0].cget("text") == "B" and
+                    children[1].cget("text") == "I" and
+                    children[2].cget("text") == "U"):
+                    toolbar = child
+                    break
+        assert toolbar is not None, "Toolbar frame not found"
+        assert isinstance(toolbar, tk.Frame)
+        assert toolbar.winfo_children()[0].cget("text") == "B"
+        assert toolbar.winfo_children()[1].cget("text") == "I"
+        assert toolbar.winfo_children()[2].cget("text") == "U"
+
     def test_file_menu(self):
         """
         Tests the file_menu method
