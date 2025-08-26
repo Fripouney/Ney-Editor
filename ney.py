@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from config import Config
 from file_handling import FileHandling
 
@@ -74,8 +75,13 @@ class NeyEditor:
     def build_text_area(self):
         """
         Build and configure the text area for the editor
+        Also adds a scrollbar and configures text tags
         """
         self.text_area.pack(expand=True, fill=tk.BOTH)
+        scroll_bar = ttk.Scrollbar(self.text_area, command=self.text_area.yview, cursor="arrow")
+        self.text_area.configure(yscrollcommand=scroll_bar.set)
+        scroll_bar.pack(side=tk.RIGHT, fill=tk.Y)
+
         Config.config_tags(self.text_area)
         Config.add_text_area_bindings(self.text_area)
 
