@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import colorchooser
 from config import Config
 from file_handling import FileHandling
 
@@ -52,7 +53,7 @@ class NeyEditor:
     def build_toolbar(self):
         """
         Build the editor toolbar
-        This will have buttons for bold, italic and underline
+        This will have buttons for bold, italic, underline and text color
         """
         self.root.grid_rowconfigure(0, weight=0)
         self.root.grid_columnconfigure(0, weight=1)
@@ -73,10 +74,34 @@ class NeyEditor:
             command=lambda: Config.toggle_tag(self.text_area, "underline"),
             font=("Arial", 10, "underline")
         )
+        color_btn = tk.Button(
+            toolbar, text="Color",
+            command=self.change_text_color
+        )
         bold_btn.pack(side=tk.LEFT, padx=2, pady=2)
         italic_btn.pack(side=tk.LEFT, padx=2, pady=2)
         underline_btn.pack(side=tk.LEFT, padx=2, pady=2)
+        color_btn.pack(side=tk.LEFT, padx=2, pady=2)
         toolbar.grid(row=0, column=0, sticky="ew", columnspan=2)
+
+    def change_text_color(self):
+        """
+        Open a color picker dialog to change the text color
+        """
+        color = colorchooser.askcolor(title="Choisir la couleur du texte")[1]
+
+        if color:
+            try:
+                tag_name = f"color_{color}"
+                if tag_name not in self.text_area.tag_names():
+                    self.text_area.tag_configure(tag_name, foreground=color)
+
+                self.text_area.tag_add(tag_name, "sel.first", "sel.last")
+            except tk.TclError:
+                Config.set_status_bar(
+                    self.status_bar,
+                    "Pas de texte sélectionné pour changer la couleur."
+                )
 
     def build_text_area(self):
         """
