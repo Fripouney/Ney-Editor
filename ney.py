@@ -98,7 +98,10 @@ class NeyEditor:
 
                 self.text_area.tag_add(tag_name, "sel.first", "sel.last")
             except tk.TclError:
-                print("No text selected to change color.")
+                Config.set_status_bar(
+                    self.status_bar,
+                    "Pas de texte sélectionné pour changer la couleur."
+                )
 
     def build_text_area(self):
         """
