@@ -31,7 +31,7 @@ class NeyEditor:
         """
         self.root.bind("<Control-s>", lambda event: FileHandling.save_file(self))
         self.root.bind("<Control-o>", lambda event: FileHandling.open_file(self))
-        self.root.bind("<Control-Shift-s>", lambda event: FileHandling.save_as(self))
+        self.root.bind("<Control-S>", lambda event: FileHandling.save_as(self))
         self.root.bind("<Control-n>", lambda event: FileHandling.new_file(self))
 
     def build_root(self):
@@ -106,11 +106,27 @@ class NeyEditor:
         Build the file menu for the editor
         """
         menu = tk.Menu(self.root)
-        menu.add_command(label="Nouveau", command=lambda: FileHandling.new_file(self))
-        menu.add_command(label="Ouvrir", command=lambda: FileHandling.open_file(self))
+        menu.add_command(
+            label="Nouveau", accelerator="Ctrl+N",
+            command=lambda: FileHandling.new_file(self)
+        )
+
+        menu.add_command(
+            label="Ouvrir", accelerator="Ctrl+O",
+            command=lambda: FileHandling.open_file(self)
+        )
+
         menu.add_separator()
-        menu.add_command(label="Enregistrer", command=lambda: FileHandling.save_file(self))
-        menu.add_command(label="Enregistrer sous", command=lambda: FileHandling.save_as(self))
+        menu.add_command(
+            label="Enregistrer", accelerator="Ctrl+S",
+            command=lambda: FileHandling.save_file(self)
+        )
+
+        menu.add_command(
+            label="Enregistrer sous", accelerator="Ctrl+Shift+S",
+            command=lambda: FileHandling.save_as(self)
+        )
+        
         menu.add_separator()
         menu.add_command(label="Quitter", command=self.root.quit)
         return menu
