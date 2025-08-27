@@ -93,7 +93,7 @@ class NeyEditor:
         if color:
             try:
                 tag_name = f"color_{color}"
-                if not tag_name in self.text_area.tag_names():
+                if tag_name not in self.text_area.tag_names():
                     self.text_area.tag_configure(tag_name, foreground=color)
 
                 self.text_area.tag_add(tag_name, "sel.first", "sel.last")
