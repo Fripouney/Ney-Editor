@@ -110,6 +110,14 @@ class FileHandling:
                     if key == "text":
                         editor.text_area.insert(index, value)
                     elif key == "tagon":
+                        if not value in editor.text_area.tag_names():
+                            splitted_value = value.split("_")
+                            match splitted_value[0]:
+                                case "color":
+                                    editor.text_area.tag_configure(value, foreground=splitted_value[1])
+                                case _:
+                                    editor.text_area.tag_configure(value)
+                        
                         editor.text_area.tag_add(value, index, tk.END)
                     elif key == "tagoff":
                         editor.text_area.tag_remove(value, index, tk.END)
