@@ -91,42 +91,7 @@ class FileHandling:
         editor.current_file = file.name
 
         FileOpener(file).open_file(editor)
-        # if editor.current_file.endswith(".ney"):
-        #     try:
-        #         content = json.load(file)
-        #         content.sort(key=lambda item: item['key'] != 'text')
-        #         editor.text_area.delete(1.0, tk.END)
-
-        #         for item in content:
-        #             key = item['key']
-        #             value = item['value']
-        #             index = item['index']
-
-        #             if key == "text":
-        #                 editor.text_area.insert(index, value)
-        #             elif key == "tagon":
-        #                 if value not in editor.text_area.tag_names():
-        #                     splitted_value = value.split("_")
-        #                     match splitted_value[0]:
-        #                         case "color":
-        #                             editor.text_area.tag_configure(value, foreground=splitted_value[1])
-        #                         case _:
-        #                             editor.text_area.tag_configure(value)
-                        
-        #                 editor.text_area.tag_add(value, index, tk.END)
-        #             elif key == "tagoff":
-        #                 editor.text_area.tag_remove(value, index, tk.END)
-
-        #     except (json.JSONDecodeError, KeyError):
-        #         ErrorHandler.error_corrupt_file(editor.status_bar)
-        #         editor.current_file = None
-        #         return
-
-        # else:
-        #     content = file.read()
-        #     editor.text_area.delete(1.0, tk.END)
-        #     editor.text_area.insert(tk.END, content)
-
+        
         Config.set_status_bar(
             editor.status_bar,
             f"Fichier ouvert : {FileHandling.get_file_name(editor)}"
