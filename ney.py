@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import colorchooser
 from config import Config
 from file_handling import FileHandling
+from sys import argv
 
 class NeyEditor:
     """
@@ -164,4 +165,8 @@ if __name__ == "__main__":
     editor.build_toolbar()
     editor.build_text_area()
     editor.build_status_bar()
+
+    if len(argv) > 1:
+        FileHandling.open_file(editor, argv[1])
+
     editor.root.mainloop()

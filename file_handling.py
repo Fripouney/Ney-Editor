@@ -58,19 +58,25 @@ class FileHandling:
         )
 
     @staticmethod
-    def open_file(editor, event=None):
+    def open_file(editor, filename=None, event=None):
         """
         Prompt the user to select a file to open
         Supported formats are .ney and .txt
         """
-        file = filedialog.askopenfile(
-            defaultextension=".ney",
-            filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
-            title="Ouvrir"
-        )
+        if filename == None:
+            file = filedialog.askopenfile(
+                defaultextension=".ney",
+                filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
+                title="Ouvrir"
+            )
 
-        if not file:
-            return
+            if not file:
+                return
+        else:
+            try:
+                file = open(filename, "r")
+            except FileNotFoundError:
+                return
 
         if not FileHandling.is_valid_file_format(file.name):
             messagebox.showerror(
