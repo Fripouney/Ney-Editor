@@ -73,7 +73,10 @@ class FileHandling:
             if not file:
                 return
         else:
-            file = open(filename, "r")
+            try:
+                file = open(filename, "r")
+            except FileNotFoundError:
+                return
 
         if not FileHandling.is_valid_file_format(file.name):
             messagebox.showerror(
