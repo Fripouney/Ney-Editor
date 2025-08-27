@@ -110,7 +110,7 @@ class FileHandling:
                     if key == "text":
                         editor.text_area.insert(index, value)
                     elif key == "tagon":
-                        if not value in editor.text_area.tag_names():
+                        if value not in editor.text_area.tag_names():
                             splitted_value = value.split("_")
                             match splitted_value[0]:
                                 case "color":
