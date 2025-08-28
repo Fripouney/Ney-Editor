@@ -1,6 +1,9 @@
 import tkinter as tk
 
 class Utils:
+    """
+    This class contains several utility methods
+    """
     @staticmethod
     def set_status_bar(status_bar, text):
         """
