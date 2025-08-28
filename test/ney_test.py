@@ -12,19 +12,6 @@ class TestNey:
         """
         return NeyEditor()
 
-    def test_add_editor_bindings(self):
-        """
-        Tests the add_editor_bindings method
-        """
-
-        editor = self.editor()
-        editor.add_editor_bindings()
-
-        assert "<Control-Key-n>" in editor.root.bind()
-        assert "<Control-Key-s>" in editor.root.bind()
-        assert "<Control-Key-o>" in editor.root.bind()
-        assert "<Control-Key-S>" in editor.root.bind()
-
     def test_build_root(self):
         """
         Tests the build_root method

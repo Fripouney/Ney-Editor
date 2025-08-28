@@ -1,5 +1,6 @@
 import tkinter as tk
 from config import Config
+from ney import NeyEditor
 
 class TestConfig:
     """
@@ -10,6 +11,19 @@ class TestConfig:
         Sets up the root Tkinter window for testing
         """
         return tk.Tk()
+
+    def test_add_editor_bindings(self):
+        """
+        Tests the add_editor_bindings method
+        """
+
+        editor = NeyEditor()
+        Config.add_editor_bindings(editor)
+
+        assert "<Control-Key-n>" in editor.root.bind()
+        assert "<Control-Key-s>" in editor.root.bind()
+        assert "<Control-Key-o>" in editor.root.bind()
+        assert "<Control-Key-S>" in editor.root.bind()
 
     def test_add_text_area_bindings(self):
         """
@@ -63,21 +77,5 @@ class TestConfig:
 
         Config.toggle_tag(text_area, "bold")
         assert "bold" not in text_area.tag_names("1.0")
-
-        root.destroy()
-
-    def test_set_status_bar(self):
-        """
-        Tests the set_status_bar method
-        """
-
-        root = self.root()
-        status_bar = tk.Text(root, height=1)
-        status_bar.pack(fill=tk.X, side=tk.BOTTOM)
-
-        Config.set_status_bar(status_bar, "whatever")
-
-        assert status_bar.get("1.0", tk.END).strip() == "whatever"
-        assert status_bar.cget("state") == "disabled"
 
         root.destroy()

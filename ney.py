@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
+from sys import argv
 from config import Config
 from file_handling import FileHandling
-from sys import argv
+from utils import Utils
 
 class NeyEditor:
     """
@@ -22,26 +23,13 @@ class NeyEditor:
         self.status_bar = tk.Text(self.root, height=1, bd=0, bg="lightgrey", state="disabled")
         self.current_file = None
 
-    def add_editor_bindings(self):
-        """
-        Add key bindings for the editor
-        Currently supports:
-        - Ctrl+S: Save
-        - Ctrl+O: Open
-        - Ctrl+Shift+S: Save As
-        - Ctrl+N: New File
-        """
-        self.root.bind("<Control-s>", lambda event: FileHandling.save_file(self))
-        self.root.bind("<Control-o>", lambda event: FileHandling.open_file(self))
-        self.root.bind("<Control-S>", lambda event: FileHandling.save_as(self))
-        self.root.bind("<Control-n>", lambda event: FileHandling.new_file(self))
-
     def build_root(self):
         """
         Build the root window for the editor
         """
         self.root.title(f"Ney Editor - {FileHandling.get_file_name(self)}")
         self.root.geometry("800x600")
+        Config.add_editor_bindings(self)
 
     def build_menu_bar(self):
         """
@@ -99,7 +87,7 @@ class NeyEditor:
 
                 self.text_area.tag_add(tag_name, "sel.first", "sel.last")
             except tk.TclError:
-                Config.set_status_bar(
+                Utils.set_status_bar(
                     self.status_bar,
                     "Pas de texte sélectionné pour changer la couleur."
                 )
@@ -152,14 +140,13 @@ class NeyEditor:
             label="Enregistrer sous", accelerator="Ctrl+Shift+S",
             command=lambda: FileHandling.save_as(self)
         )
-        
+
         menu.add_separator()
         menu.add_command(label="Quitter", command=self.root.quit)
         return menu
 
 if __name__ == "__main__":
     editor = NeyEditor()
-    editor.add_editor_bindings()
     editor.build_root()
     editor.build_menu_bar()
     editor.build_toolbar()

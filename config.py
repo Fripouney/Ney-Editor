@@ -1,9 +1,25 @@
 import tkinter as tk
+from file_handling import FileHandling
 
 class Config:
     """
     Configuration for different components of the editor
     """
+    @staticmethod
+    def add_editor_bindings(editor):
+        """
+        Add key bindings for the editor
+        Currently supports:
+        - Ctrl+S: Save
+        - Ctrl+O: Open
+        - Ctrl+Shift+S: Save As
+        - Ctrl+N: New File
+        """
+        editor.root.bind("<Control-s>", lambda event: FileHandling.save_file(editor))
+        editor.root.bind("<Control-o>", lambda event: FileHandling.open_file(editor))
+        editor.root.bind("<Control-S>", lambda event: FileHandling.save_as(editor))
+        editor.root.bind("<Control-n>", lambda event: FileHandling.new_file(editor))
+
     @staticmethod
     def add_text_area_bindings(text_area):
         """
@@ -37,13 +53,3 @@ class Config:
             print("No text selected to toggle tag.")
 
         return "break"
-
-    @staticmethod
-    def set_status_bar(status_bar, text):
-        """
-        Set the text of the status bar
-        """
-        status_bar.config(state="normal")
-        status_bar.delete(1.0, tk.END)
-        status_bar.insert(tk.END, text)
-        status_bar.config(state="disabled")

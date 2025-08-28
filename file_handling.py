@@ -2,7 +2,9 @@ import os
 import tkinter as tk
 import json
 from tkinter import filedialog, messagebox
-from config import Config
+from utils import Utils
+from service.file_opener import FileOpener
+from service.error_handler import ErrorHandler
 
 class FileHandling:
     """
@@ -22,14 +24,14 @@ class FileHandling:
                     {"key": key, "value": value, "index": index}
                     for key, value, index in content
                 ]
-                with open(editor.current_file, 'w') as file:
+                with open(editor.current_file, 'w', encoding='utf-8') as file:
                     json.dump(json_content, file, indent=4)
 
             else:
-                with open(editor.current_file, 'w') as file:
+                with open(editor.current_file, 'w', encoding='utf-8') as file:
                     file.write(editor.text_area.get(1.0, tk.END))
 
-            Config.set_status_bar(
+            Utils.set_status_bar(
                 editor.status_bar,
                 f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
             )
@@ -52,7 +54,7 @@ class FileHandling:
         file.close()
         FileHandling.save_file(editor)
         editor.root.title(f"Ney editor - {FileHandling.get_file_name(editor)}")
-        Config.set_status_bar(
+        Utils.set_status_bar(
             editor.status_bar,
             f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
         )
@@ -63,7 +65,7 @@ class FileHandling:
         Prompt the user to select a file to open
         Supported formats are .ney and .txt
         """
-        if filename == None:
+        if filename is None:
             file = filedialog.askopenfile(
                 defaultextension=".ney",
                 filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
@@ -74,74 +76,23 @@ class FileHandling:
                 return
         else:
             try:
-                file = open(filename, "r")
+                file = open(filename, "r", encoding="utf-8")
             except FileNotFoundError:
                 return
 
         if not FileHandling.is_valid_file_format(file.name):
-            messagebox.showerror(
-                "Une erreur est survenue",
-                "Le fichier n'est pas au format .ney ou .txt !"
-            )
-            Config.set_status_bar(
-                editor.status_bar,
-                "ERREUR : Le fichier n'est pas au format .ney ou .txt !"
-            )
+            ErrorHandler.error_invalid_file_format(editor.status_bar)
             return
 
         if file.name is None:
-            messagebox.showerror(
-                "Une erreur est survenue",
-                "Le fichier n'a pas pu être ouvert (Nom incorrect)"
-            )
-            Config.set_status_bar(
-                editor.status_bar,
-                "ERREUR : Le fichier n'a pas pu être ouvert (Nom incorrect)"
-            )
+            ErrorHandler.error_invalid_file_name(editor.status_bar)
             return
 
         editor.current_file = file.name
 
-        if editor.current_file.endswith(".ney"):
-            try:
-                content = json.load(file)
-                content.sort(key=lambda item: item['key'] != 'text')
-                editor.text_area.delete(1.0, tk.END)
+        FileOpener(file).open_file(editor)
 
-                for item in content:
-                    key = item['key']
-                    value = item['value']
-                    index = item['index']
-
-                    if key == "text":
-                        editor.text_area.insert(index, value)
-                    elif key == "tagon":
-                        if value not in editor.text_area.tag_names():
-                            splitted_value = value.split("_")
-                            match splitted_value[0]:
-                                case "color":
-                                    editor.text_area.tag_configure(value, foreground=splitted_value[1])
-                                case _:
-                                    editor.text_area.tag_configure(value)
-                        
-                        editor.text_area.tag_add(value, index, tk.END)
-                    elif key == "tagoff":
-                        editor.text_area.tag_remove(value, index, tk.END)
-
-            except (json.JSONDecodeError, KeyError):
-                messagebox.showerror(
-                    "Erreur de lecture",
-                    "Le fichier .ney est corrompu ou mal formaté."
-                )
-                editor.current_file = None
-                return
-
-        else:
-            content = file.read()
-            editor.text_area.delete(1.0, tk.END)
-            editor.text_area.insert(tk.END, content)
-
-        Config.set_status_bar(
+        Utils.set_status_bar(
             editor.status_bar,
             f"Fichier ouvert : {FileHandling.get_file_name(editor)}"
         )
