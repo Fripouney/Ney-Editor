@@ -91,7 +91,7 @@ class FileHandling:
         editor.current_file = file.name
 
         FileOpener(file).open_file(editor)
-        
+
         Utils.set_status_bar(
             editor.status_bar,
             f"Fichier ouvert : {FileHandling.get_file_name(editor)}"

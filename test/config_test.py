@@ -11,7 +11,7 @@ class TestConfig:
         Sets up the root Tkinter window for testing
         """
         return tk.Tk()
-    
+
     def test_add_editor_bindings(self):
         """
         Tests the add_editor_bindings method
