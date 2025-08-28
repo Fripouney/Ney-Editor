@@ -29,8 +29,8 @@ class FileOpener:
         except json.JSONDecodeError:
             ErrorHandler.error_corrupt_file(editor.status_bar)
             return
-        
         content.sort(key=lambda item: item['key'] != 'text')
+        editor.text_area.delete(1.0, tk.END)
         for item in content:
             key = item['key']
             value = item['value']
@@ -58,7 +58,7 @@ class FileOpener:
                     editor.text_area.tag_configure(value, foreground=splitted_value[1])
                 case _:
                     editor.text_area.tag_configure(value)
-        
+
         editor.text_area.tag_add(value, index, tk.END)
 
 
@@ -69,5 +69,3 @@ class FileOpener:
         content = self.file.read()
         editor.text_area.delete(1.0, tk.END)
         editor.text_area.insert(tk.END, content)
-
-

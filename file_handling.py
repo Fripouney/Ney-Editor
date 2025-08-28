@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 import json
 from tkinter import filedialog, messagebox
-from config import Config
+from utils import Utils
 from service.file_opener import FileOpener
 from service.error_handler import ErrorHandler
 
@@ -31,7 +31,7 @@ class FileHandling:
                 with open(editor.current_file, 'w', encoding='utf-8') as file:
                     file.write(editor.text_area.get(1.0, tk.END))
 
-            Config.set_status_bar(
+            Utils.set_status_bar(
                 editor.status_bar,
                 f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
             )
@@ -54,7 +54,7 @@ class FileHandling:
         file.close()
         FileHandling.save_file(editor)
         editor.root.title(f"Ney editor - {FileHandling.get_file_name(editor)}")
-        Config.set_status_bar(
+        Utils.set_status_bar(
             editor.status_bar,
             f"Fichier enregistré : {FileHandling.get_file_name(editor)}"
         )
@@ -92,7 +92,7 @@ class FileHandling:
 
         FileOpener(file).open_file(editor)
         
-        Config.set_status_bar(
+        Utils.set_status_bar(
             editor.status_bar,
             f"Fichier ouvert : {FileHandling.get_file_name(editor)}"
         )

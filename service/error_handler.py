@@ -1,5 +1,5 @@
 from tkinter import messagebox
-from config import Config
+from utils import Utils
 
 class ErrorHandler:
     """
@@ -15,7 +15,7 @@ class ErrorHandler:
             "Le fichier .ney est corrompu ou mal formaté."
         )
 
-        Config.set_status_bar(
+        Utils.set_status_bar(
             status_bar,
             "ERREUR : Le fichier .ney est corrompu ou mal formaté."
         )
@@ -29,7 +29,7 @@ class ErrorHandler:
             "Une erreur est survenue",
             "Le fichier n'est pas au format .ney ou .txt !"
         )
-        Config.set_status_bar(
+        Utils.set_status_bar(
             status_bar,
             "ERREUR : Le fichier n'est pas au format .ney ou .txt !"
         )
@@ -43,7 +43,7 @@ class ErrorHandler:
             "Une erreur est survenue",
             "Le fichier n'a pas pu être ouvert (Nom incorrect)"
         )
-        Config.set_status_bar(
+        Utils.set_status_bar(
             status_bar,
             "ERREUR : Le fichier n'a pas pu être ouvert (Nom incorrect)"
         )
