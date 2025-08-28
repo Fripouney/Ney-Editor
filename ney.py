@@ -147,7 +147,6 @@ class NeyEditor:
 
 if __name__ == "__main__":
     editor = NeyEditor()
-    # editor.add_editor_bindings()
     editor.build_root()
     editor.build_menu_bar()
     editor.build_toolbar()
