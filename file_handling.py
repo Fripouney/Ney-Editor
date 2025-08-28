@@ -24,11 +24,11 @@ class FileHandling:
                     {"key": key, "value": value, "index": index}
                     for key, value, index in content
                 ]
-                with open(editor.current_file, 'w') as file:
+                with open(editor.current_file, 'w', encoding='utf-8') as file:
                     json.dump(json_content, file, indent=4)
 
             else:
-                with open(editor.current_file, 'w') as file:
+                with open(editor.current_file, 'w', encoding='utf-8') as file:
                     file.write(editor.text_area.get(1.0, tk.END))
 
             Config.set_status_bar(
@@ -65,7 +65,7 @@ class FileHandling:
         Prompt the user to select a file to open
         Supported formats are .ney and .txt
         """
-        if filename == None:
+        if filename is None:
             file = filedialog.askopenfile(
                 defaultextension=".ney",
                 filetypes=[("Ney files", "*.ney"), ("Text files", "*.txt")],
@@ -76,7 +76,7 @@ class FileHandling:
                 return
         else:
             try:
-                file = open(filename, "r")
+                file = open(filename, "r", encoding="utf-8")
             except FileNotFoundError:
                 return
 

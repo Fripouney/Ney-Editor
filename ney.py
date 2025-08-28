@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
+from sys import argv
 from config import Config
 from file_handling import FileHandling
-from sys import argv
 
 class NeyEditor:
     """
@@ -152,7 +152,7 @@ class NeyEditor:
             label="Enregistrer sous", accelerator="Ctrl+Shift+S",
             command=lambda: FileHandling.save_as(self)
         )
-        
+
         menu.add_separator()
         menu.add_command(label="Quitter", command=self.root.quit)
         return menu
