@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import colorchooser
 from sys import argv
 from config import Config
 from file_handling import FileHandling
@@ -53,21 +52,31 @@ class NeyEditor:
             command=lambda: TextFormatter.toggle_tag(self.text_area, "bold"),
             font=("Arial", 10, "bold")
         )
+
         italic_btn = tk.Button(
             toolbar, text="I",
             command=lambda: TextFormatter.toggle_tag(self.text_area, "italic"),
             font=("Arial", 10, "italic")
         )
+
         underline_btn = tk.Button(
             toolbar, text="U",
             command=lambda: TextFormatter.toggle_tag(self.text_area, "underline"),
             font=("Arial", 10, "underline")
         )
+
         color_btn = tk.Button(
             toolbar, text="Color",
             command=lambda: TextFormatter.change_text_color(self)
         )
-        size_menu = tk.OptionMenu(toolbar, tk.StringVar(value="Taille"), "8", "10", "12", "14", "16", "18", "20", command=lambda size: TextFormatter.toggle_tag(self.text_area, f"size_{size}"))
+
+        possible_sizes = ("8", "10", "12", "14", "16", "18", "20")
+        size_menu = tk.OptionMenu(
+            toolbar,
+            tk.StringVar(value="Taille"),
+            *possible_sizes,
+            command=lambda size: TextFormatter.toggle_tag(self.text_area, f"size_{size}")
+        )
 
         bold_btn.pack(side=tk.LEFT, padx=2, pady=2)
         italic_btn.pack(side=tk.LEFT, padx=2, pady=2)
