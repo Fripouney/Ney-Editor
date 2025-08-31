@@ -52,7 +52,7 @@ class FileOpener:
         """
         Configures and applies tags in the text area
         """
-        if value not in editor.text_area.tag_names():
+        if value not in editor.text_area.tag_names(index):
             TextFormatter.toggle_tag(editor.text_area, value, index)
 
     def handle_txt_file(self, editor):
