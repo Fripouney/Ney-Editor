@@ -9,6 +9,8 @@ Still a very early WIP, for now this editor can :
 - Create, open and edit .ney files
 - Put text in **bold**, *italic* and <ins>underlined</ins>
 - Changing color of text
+- Changing text size
+- Applying multiple text formats at once
 
 Saving a file as .txt will remove all of the text format for obvious reasons
 

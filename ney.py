@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import colorchooser
 from sys import argv
 from config import Config
 from file_handling import FileHandling
-from utils import Utils
+from service.text_formatter import TextFormatter
 
 class NeyEditor:
     """
@@ -50,47 +49,41 @@ class NeyEditor:
         toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED)
         bold_btn = tk.Button(
             toolbar, text="B",
-            command=lambda: Config.toggle_tag(self.text_area, "bold"),
+            command=lambda: TextFormatter.toggle_tag(self.text_area, "bold"),
             font=("Arial", 10, "bold")
         )
+
         italic_btn = tk.Button(
             toolbar, text="I",
-            command=lambda: Config.toggle_tag(self.text_area, "italic"),
+            command=lambda: TextFormatter.toggle_tag(self.text_area, "italic"),
             font=("Arial", 10, "italic")
         )
+
         underline_btn = tk.Button(
             toolbar, text="U",
-            command=lambda: Config.toggle_tag(self.text_area, "underline"),
+            command=lambda: TextFormatter.toggle_tag(self.text_area, "underline"),
             font=("Arial", 10, "underline")
         )
+
         color_btn = tk.Button(
             toolbar, text="Color",
-            command=self.change_text_color
+            command=lambda: TextFormatter.change_text_color(self)
         )
+
+        possible_sizes = ("8", "10", "12", "14", "16", "18", "20")
+        size_menu = tk.OptionMenu(
+            toolbar,
+            tk.StringVar(value="Taille"),
+            *possible_sizes,
+            command=lambda size: TextFormatter.toggle_tag(self.text_area, f"size_{size}")
+        )
+
         bold_btn.pack(side=tk.LEFT, padx=2, pady=2)
         italic_btn.pack(side=tk.LEFT, padx=2, pady=2)
         underline_btn.pack(side=tk.LEFT, padx=2, pady=2)
         color_btn.pack(side=tk.LEFT, padx=2, pady=2)
+        size_menu.pack(side=tk.LEFT, padx=2, pady=2)
         toolbar.grid(row=0, column=0, sticky="ew", columnspan=2)
-
-    def change_text_color(self):
-        """
-        Open a color picker dialog to change the text color
-        """
-        color = colorchooser.askcolor(title="Choisir la couleur du texte")[1]
-
-        if color:
-            try:
-                tag_name = f"color_{color}"
-                if tag_name not in self.text_area.tag_names():
-                    self.text_area.tag_configure(tag_name, foreground=color)
-
-                self.text_area.tag_add(tag_name, "sel.first", "sel.last")
-            except tk.TclError:
-                Utils.set_status_bar(
-                    self.status_bar,
-                    "Pas de texte sélectionné pour changer la couleur."
-                )
 
     def build_text_area(self):
         """
@@ -105,7 +98,7 @@ class NeyEditor:
         scroll_bar.grid(row=1, column=1, sticky="ns")
         self.text_area.configure(yscrollcommand=scroll_bar.set)
 
-        Config.config_tags(self.text_area)
+        # Config.config_tags(self.text_area)
         Config.add_text_area_bindings(self.text_area)
 
     def build_status_bar(self):
@@ -114,6 +107,7 @@ class NeyEditor:
         """
         self.root.grid_rowconfigure(2, weight=0)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky="ew")
+
 
     def file_menu(self):
         """

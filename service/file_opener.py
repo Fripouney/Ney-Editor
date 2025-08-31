@@ -1,6 +1,7 @@
 import tkinter as tk
 import json
 from service.error_handler import ErrorHandler
+from service.text_formatter import TextFormatter
 
 class FileOpener:
     """
@@ -51,16 +52,8 @@ class FileOpener:
         """
         Configures and applies tags in the text area
         """
-        if value not in editor.text_area.tag_names():
-            splitted_value = value.split("_")
-            match splitted_value[0]:
-                case "color":
-                    editor.text_area.tag_configure(value, foreground=splitted_value[1])
-                case _:
-                    editor.text_area.tag_configure(value)
-
-        editor.text_area.tag_add(value, index, tk.END)
-
+        if value not in editor.text_area.tag_names(index):
+            TextFormatter.toggle_tag(editor.text_area, value, index)
 
     def handle_txt_file(self, editor):
         """
