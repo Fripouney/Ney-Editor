@@ -98,6 +98,7 @@ class NeyEditor:
         """
         self.root.grid_rowconfigure(2, weight=0)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky="ew")
+        
 
     def file_menu(self):
         """
