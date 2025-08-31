@@ -3,7 +3,13 @@ from service.text_formatter import TextFormatter
 
 
 class TestTextFormatter:
+    """
+    Tests methods in the TextFormatter class
+    """
     def root(self):
+        """
+        Creates root widget for testing
+        """
         return tk.Tk()
 
     def test_toggle_tag(self):
@@ -19,19 +25,24 @@ class TestTextFormatter:
         text_area.tag_add("sel", "1.0", "1.7")
 
         TextFormatter.toggle_tag(text_area, "bold")
-        assert "bold" in text_area.tag_names("1.0") and len(text_area.tag_names("1.0")) == 2
+        assert "bold" in text_area.tag_names("1.0")
+        assert len(text_area.tag_names("1.0")) == 2
 
         TextFormatter.toggle_tag(text_area, "size_18")
-        assert "bold,size_18" in text_area.tag_names("1.0") and len(text_area.tag_names("1.0")) == 2
+        assert "bold,size_18" in text_area.tag_names("1.0")
+        assert len(text_area.tag_names("1.0")) == 2
 
         TextFormatter.toggle_tag(text_area, "italic")
-        assert "bold,italic,size_18" in text_area.tag_names("1.0") and len(text_area.tag_names("1.0")) == 2
+        assert "bold,italic,size_18" in text_area.tag_names("1.0")
+        assert len(text_area.tag_names("1.0")) == 2
 
         TextFormatter.toggle_tag(text_area, "italic")
-        assert "bold,size_18" in text_area.tag_names("1.0") and len(text_area.tag_names("1.0")) == 2
+        assert "bold,size_18" in text_area.tag_names("1.0")
+        assert len(text_area.tag_names("1.0")) == 2
 
         TextFormatter.toggle_tag(text_area, "size_14")
-        assert "bold,size_14" in text_area.tag_names("1.0") and len(text_area.tag_names("1.0")) == 2
+        assert "bold,size_14" in text_area.tag_names("1.0")
+        assert len(text_area.tag_names("1.0")) == 2
 
         root.destroy()
 
