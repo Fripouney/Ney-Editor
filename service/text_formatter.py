@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import colorchooser
+import pdb
 
 class TextFormatter:
     """
@@ -17,6 +18,7 @@ class TextFormatter:
             index_end = tk.END
 
         current_tags = []
+        main_tag = []
         try:
             current_tags = list(text_widget.tag_names(index_start))
         except tk.TclError:
@@ -24,8 +26,19 @@ class TextFormatter:
             return "break"
 
         if len(current_tags) <= 1 or tag not in current_tags[1].split(','):
-            current_tags = [t for t in current_tags if t != "sel"] + [tag]
-            combined_tag = ",".join(sorted(current_tags))
+            current_tags = [t for t in current_tags if t != "sel"]
+            if len(current_tags) > 0:
+                main_tag = current_tags[0].split(',')
+            TextFormatter.delete_combined_tag(
+                text_widget,
+                main_tag,
+                tag,
+                index_start,
+                index_end
+            )
+
+            main_tag += [tag]
+            combined_tag = ",".join(sorted(main_tag))
             TextFormatter.configure_combined_tag(text_widget, combined_tag)
             for tag_name in current_tags:
                 text_widget.tag_remove(tag_name, index_start, index_end)
@@ -91,3 +104,21 @@ class TextFormatter:
 
         if color:
             TextFormatter.toggle_tag(editor.text_area, f"color_{color}")
+
+    @staticmethod
+    def delete_combined_tag(text_widget: tk.Text, current_tag: list[str], composed_tag: str, index_start, index_end):
+        """
+        Deletes a combined tag from the text widget
+        """
+        tag_to_remove = None
+        if composed_tag.startswith("color_"):
+            tag_to_remove = next((t for t in current_tag if t.startswith("color_")), None)
+        elif composed_tag.startswith("size_"):
+            tag_to_remove = next((t for t in current_tag if t.startswith("size_")), None)
+        else:
+            return
+        
+        if not tag_to_remove:
+            return
+
+        current_tag.remove(tag_to_remove)
