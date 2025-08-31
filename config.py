@@ -29,28 +29,3 @@ class Config:
         text_area.bind("<Control-b>", lambda event: TextFormatter.toggle_tag(text_area, "bold"))
         text_area.bind("<Control-i>", lambda event: TextFormatter.toggle_tag(text_area, "italic"))
         text_area.bind("<Control-u>", lambda event: TextFormatter.toggle_tag(text_area, "underline"))
-
-    # @staticmethod
-    # def config_tags(text_area):
-    #     """
-    #     Configure text area tags for the editor
-    #     """
-    #     text_area.tag_configure("bold", font=("Arial", 12, "bold"))
-    #     text_area.tag_configure("italic", font=("Arial", 12, "italic"))
-    #     text_area.tag_configure("underline", font=("Arial", 12, "underline"))
-
-    # @staticmethod
-    # def toggle_tag(text_area, tag, event=None):
-    #     """
-    #     Toggle a text area tag on the selected text
-    #     """
-    #     try:
-    #         current_tags = text_area.tag_names("sel.first")
-    #         if tag in current_tags:
-    #             text_area.tag_remove(tag, "sel.first", "sel.last")
-    #         else:
-    #             text_area.tag_add(tag, "sel.first", "sel.last")
-    #     except tk.TclError:
-    #         print("No text selected to toggle tag.")
-
-    #     return "break"

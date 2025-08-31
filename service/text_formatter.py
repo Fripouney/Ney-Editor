@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import colorchooser
-from utils import Utils
 
 class TextFormatter:
     """
@@ -46,7 +45,7 @@ class TextFormatter:
                 text_widget.tag_add(combined_new_tag, index_start, index_end)
 
         return "break"
-    
+
     @staticmethod
     def configure_combined_tag(text_widget: tk.Text, combined_tag: str):
         """
@@ -92,20 +91,3 @@ class TextFormatter:
 
         if color:
             TextFormatter.toggle_tag(editor.text_area, f"color_{color}")
-
-    # @staticmethod
-    # def change_text_size(editor, size):
-    #     """
-    #     Change the font size of the selected text
-    #     """
-    #     try:
-    #         tag_name = f"size_{size}"
-    #         if tag_name not in editor.text_area.tag_names():
-    #             editor.text_area.tag_configure(tag_name, font=("Arial", size))
-
-    #         editor.text_area.tag_add(tag_name, "sel.first", "sel.last")
-    #     except tk.TclError:
-    #         Utils.set_status_bar(
-    #             editor.status_bar,
-    #             "Pas de texte sélectionné pour changer la taille."
-    #         )
