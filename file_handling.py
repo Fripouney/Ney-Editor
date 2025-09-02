@@ -17,7 +17,7 @@ class FileHandling:
         """
         if editor.current_file:
             if editor.current_file.endswith(".ney"):
-                content = editor.text_area.dump(1.0, tk.END, tag=True, text=True)
+                content = editor.text_area.dump(1.0, tk.END)
                 content.pop(-1) # Remove the extra /n
 
                 json_content = [
@@ -125,3 +125,7 @@ class FileHandling:
         Get the current file name without full path
         """
         return os.path.basename(editor.current_file) if editor.current_file else "Sans titre"
+    
+    @staticmethod
+    def insert_image(editor, event=None):
+        pass
