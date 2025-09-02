@@ -1,8 +1,7 @@
 import tkinter as tk
-import unittest
 from service.menu_bar_builder import MenuBarBuilder
 
-class TestMenubarBuilder(unittest.TestCase):
+class TestMenubarBuilder():
     def instance(self):
         """
         Creates root widget for testing

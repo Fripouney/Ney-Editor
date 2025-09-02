@@ -2,9 +2,11 @@ import os
 import tkinter as tk
 import json
 from tkinter import filedialog, messagebox
+from PIL import Image, ImageTk
 from utils import Utils
 from service.file_opener import FileOpener
 from service.error_handler import ErrorHandler
+from service.image_inserter import ImageInserter
 
 class FileHandling:
     """
@@ -113,6 +115,32 @@ class FileHandling:
         editor.root.title("Ney Editor - Sans titre")
 
     @staticmethod
+    def open_image_dialog(editor, event=None):
+        """
+        Opens a dialog to select an image and returns the image
+        """
+        file_path = filedialog.askopenfilename(
+            filetypes=[
+                ("Image files", "*.png;*.jpg;*.jpeg;*.gif;*.bmp"),
+                ("All files", "*.*")
+            ]
+        )
+        if not file_path:
+            return
+
+        try:
+            pil_image = Image.open(file_path)
+        except Exception as e:
+            messagebox.showerror("Erreur", f"Impossible d'ouvrir l'image : {e}")
+            return
+
+        image = ImageTk.PhotoImage(pil_image)
+        inserter = ImageInserter(editor.text_area, image)
+        inserter.insert_image()
+        editor.text_area = inserter.text_area
+        editor.image_refs.append(image)
+
+    @staticmethod
     def is_valid_file_format(file_name):
         """
         Check if the file format is valid
@@ -125,7 +153,3 @@ class FileHandling:
         Get the current file name without full path
         """
         return os.path.basename(editor.current_file) if editor.current_file else "Sans titre"
-    
-    @staticmethod
-    def insert_image(editor, event=None):
-        pass

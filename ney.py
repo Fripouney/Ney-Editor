@@ -22,6 +22,7 @@ class NeyEditor:
         self.text_area = tk.Text(self.root, font="Arial", wrap=tk.WORD, undo=True)
         self.status_bar = tk.Text(self.root, height=1, bd=0, bg="lightgrey", state="disabled")
         self.current_file = None
+        self.image_refs = []  # prevents garbage collection (this is atrocious)
 
     def build_root(self):
         """
@@ -35,7 +36,7 @@ class NeyEditor:
         """
         Build the top menu bar for the editor
         """
-        menu_bar = MenuBarBuilder(self.root).build()
+        menu_bar = MenuBarBuilder(self).build()
         self.root.config(menu=menu_bar)
 
     def build_toolbar(self):
