@@ -121,7 +121,7 @@ class FileHandling:
         """
         file_path = filedialog.askopenfilename(
             filetypes=[
-                ("Image files", "*.png;*.jpg;*.jpeg;*.gif;*.bmp"),
+                ("Image files", ("*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")),
                 ("All files", "*.*")
             ]
         )
