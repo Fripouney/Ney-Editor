@@ -44,6 +44,7 @@ class MenuBarBuilder:
         menu.add_command(label="Quitter", command=self.root.quit)
         
         self.menu_bar.add_cascade(label="Fichier", menu=menu)
+        return menu
 
     def build_insert_menu(self):
         """
@@ -56,3 +57,4 @@ class MenuBarBuilder:
             command=lambda: FileHandling.insert_image(self)
         )
         self.menu_bar.add_cascade(label="Insertion", menu=menu)
+        return menu

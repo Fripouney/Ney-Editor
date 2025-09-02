@@ -98,7 +98,6 @@ class NeyEditor:
         scroll_bar.grid(row=1, column=1, sticky="ns")
         self.text_area.configure(yscrollcommand=scroll_bar.set)
 
-        # Config.config_tags(self.text_area)
         Config.add_text_area_bindings(self.text_area)
 
     def build_status_bar(self):

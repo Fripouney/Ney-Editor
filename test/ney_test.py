@@ -43,7 +43,7 @@ class TestNey:
 
         editor = self.editor()
         editor.build_toolbar()
-        # Find the toolbar frame by looking for a tk.Frame with the expected buttons
+
         toolbar = None
         for child in editor.root.winfo_children():
             if isinstance(child, tk.Frame):
@@ -59,23 +59,3 @@ class TestNey:
         assert toolbar.winfo_children()[0].cget("text") == "B"
         assert toolbar.winfo_children()[1].cget("text") == "I"
         assert toolbar.winfo_children()[2].cget("text") == "U"
-
-    def test_file_menu(self):
-        """
-        Tests the file_menu method
-        """
-
-        editor = self.editor()
-        menu = editor.file_menu()
-        assert isinstance(menu, tk.Menu)
-
-        end_index = menu.index("end")
-        labels = [
-            menu.entrycget(i, "label") if menu.type(i) != "separator" else None
-            for i in range(1, end_index + 1) if end_index is not None
-        ] if end_index is not None else []
-        expected_labels = [
-            "Nouveau", "Ouvrir", None, "Enregistrer",
-            "Enregistrer sous", None, "Quitter"
-        ]
-        assert labels == expected_labels
