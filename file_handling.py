@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox
 from utils import Utils
 from service.file_opener import FileOpener
 from service.error_handler import ErrorHandler
+from service.image_inserter import ImageInserter
 
 class FileHandling:
     """
@@ -17,15 +18,34 @@ class FileHandling:
         """
         if editor.current_file:
             if editor.current_file.endswith(".ney"):
-                content = editor.text_area.dump(1.0, tk.END, tag=True, text=True)
-                content.pop(-1) # Remove the extra /n
+                content = []
+                image_counter = 0
 
-                json_content = [
-                    {"key": key, "value": value, "index": index}
-                    for key, value, index in content
-                ]
-                with open(editor.current_file, 'w', encoding='utf-8') as file:
-                    json.dump(json_content, file, indent=4)
+                for item in editor.text_area.dump(
+                    1.0, tk.END,
+                    tag=True, text=True, mark=True, image=True
+                )[:-1]:
+                    key, value, index = item
+
+                    if key == "image":
+
+                        if hasattr(editor, 'image_data_map') and image_counter < len(editor.image_data_map):
+                            base64_data = editor.image_data_map[image_counter]
+                            content.append({
+                                "key": "image", 
+                                "value": base64_data, 
+                                "index": str(index)
+                            })
+                            image_counter += 1
+                    elif key in ["text", "tagon", "tagoff", "mark"]:
+                        content.append({
+                            "key": key, 
+                            "value": value, 
+                            "index": str(index)
+                        })
+
+                with open(editor.current_file, "w") as file:
+                    json.dump(content, file, indent=4)
 
             else:
                 with open(editor.current_file, 'w', encoding='utf-8') as file:
@@ -111,6 +131,26 @@ class FileHandling:
         editor.text_area.delete(1.0, tk.END)
         editor.current_file = None
         editor.root.title("Ney Editor - Sans titre")
+
+    @staticmethod
+    def open_image_dialog(editor, event=None):
+        """
+        Opens a dialog to select an image and returns the image
+        """
+        file_path = filedialog.askopenfilename(
+            filetypes=[
+                ("Image files", ("*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")),
+                ("All files", "*.*")
+            ]
+        )
+        if not file_path:
+            return
+
+        inserter = ImageInserter(editor.text_area, file_path)
+        image_data = inserter.insert_image()
+        editor.text_area = inserter.text_area
+        editor.image_data_map.append(image_data)
+        editor.image_references.append(inserter.image)
 
     @staticmethod
     def is_valid_file_format(file_name):

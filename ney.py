@@ -4,6 +4,7 @@ from sys import argv
 from config import Config
 from file_handling import FileHandling
 from service.text_formatter import TextFormatter
+from service.menu_bar_builder import MenuBarBuilder
 
 class NeyEditor:
     """
@@ -21,6 +22,8 @@ class NeyEditor:
         self.text_area = tk.Text(self.root, font="Arial", wrap=tk.WORD, undo=True)
         self.status_bar = tk.Text(self.root, height=1, bd=0, bg="lightgrey", state="disabled")
         self.current_file = None
+        self.image_references = []  # prevents garbage collection
+        self.image_data_map = []  # store base64 image data for saving
 
     def build_root(self):
         """
@@ -34,8 +37,7 @@ class NeyEditor:
         """
         Build the top menu bar for the editor
         """
-        menu_bar = tk.Menu(self.root)
-        menu_bar.add_cascade(label="Fichier", menu=self.file_menu())
+        menu_bar = MenuBarBuilder(self).build()
         self.root.config(menu=menu_bar)
 
     def build_toolbar(self):
@@ -98,7 +100,6 @@ class NeyEditor:
         scroll_bar.grid(row=1, column=1, sticky="ns")
         self.text_area.configure(yscrollcommand=scroll_bar.set)
 
-        # Config.config_tags(self.text_area)
         Config.add_text_area_bindings(self.text_area)
 
     def build_status_bar(self):
@@ -108,36 +109,6 @@ class NeyEditor:
         self.root.grid_rowconfigure(2, weight=0)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky="ew")
 
-
-    def file_menu(self):
-        """
-        Build the file menu for the editor
-        """
-        menu = tk.Menu(self.root)
-        menu.add_command(
-            label="Nouveau", accelerator="Ctrl+N",
-            command=lambda: FileHandling.new_file(self)
-        )
-
-        menu.add_command(
-            label="Ouvrir", accelerator="Ctrl+O",
-            command=lambda: FileHandling.open_file(self)
-        )
-
-        menu.add_separator()
-        menu.add_command(
-            label="Enregistrer", accelerator="Ctrl+S",
-            command=lambda: FileHandling.save_file(self)
-        )
-
-        menu.add_command(
-            label="Enregistrer sous", accelerator="Ctrl+Shift+S",
-            command=lambda: FileHandling.save_as(self)
-        )
-
-        menu.add_separator()
-        menu.add_command(label="Quitter", command=self.root.quit)
-        return menu
 
 if __name__ == "__main__":
     editor = NeyEditor()

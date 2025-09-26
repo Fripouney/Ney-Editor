@@ -47,3 +47,17 @@ class ErrorHandler:
             status_bar,
             "ERREUR : Le fichier n'a pas pu être ouvert (Nom incorrect)"
         )
+
+    @staticmethod
+    def error_image_load(status_bar):
+        """
+        Called when an image fails to load
+        """
+        messagebox.showerror(
+            "Erreur de chargement de l'image",
+            "L'image n'a pas pu être chargée."
+        )
+        Utils.set_status_bar(
+            status_bar,
+            "ERREUR : L'image n'a pas pu être chargée."
+        )
