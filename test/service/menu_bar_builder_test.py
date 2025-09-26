@@ -3,12 +3,15 @@ from service.menu_bar_builder import MenuBarBuilder
 from ney import NeyEditor
 
 class TestMenubarBuilder():
+    """
+    Tests methods of MenuBarBuilder class
+    """
     def instance(self):
         """
         Creates root widget for testing
         """
         return MenuBarBuilder(NeyEditor())
-    
+
     def test_build_file_menu(self):
         """
         Tests the build_file_menu method

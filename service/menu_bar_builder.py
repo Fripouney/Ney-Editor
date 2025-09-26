@@ -1,6 +1,5 @@
 import tkinter as tk
 from file_handling import FileHandling
-from service.image_inserter import ImageInserter
 
 class MenuBarBuilder:
     """
@@ -11,6 +10,9 @@ class MenuBarBuilder:
         self.menu_bar = tk.Menu(self.editor.root)
 
     def build(self):
+        """
+        Builds the menu bar object
+        """
         self.build_file_menu()
         self.build_insert_menu()
         return self.menu_bar
@@ -43,7 +45,7 @@ class MenuBarBuilder:
 
         menu.add_separator()
         menu.add_command(label="Quitter", command=self.editor.root.quit)
-        
+
         self.menu_bar.add_cascade(label="Fichier", menu=menu)
         return menu
 
@@ -52,7 +54,7 @@ class MenuBarBuilder:
         Method to build the "insert" menu
         """
         menu = tk.Menu(self.editor.root)
-        
+
         menu.add_command(
             label="Image...",
             command=lambda: FileHandling.open_image_dialog(self.editor)

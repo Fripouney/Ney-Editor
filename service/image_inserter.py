@@ -31,11 +31,17 @@ class ImageInserter:
         return self.image_data
 
     def encode_to_base64(self, file_path: str) -> str:
+        """
+        Encodes the image file at file_path to a base64 string
+        """
         with open(file_path, "rb") as image_file:
             encoded = base64.b64encode(image_file.read()).decode("utf-8")
             return encoded
-        
+
     def encode_pil_image_to_base64(self, pil_image) -> str:
+        """
+        Encodes the pil_image to a base64 string
+        """
         buffered = io.BytesIO()
         pil_image.save(buffered, format="PNG")
         encoded = base64.b64encode(buffered.getvalue()).decode("utf-8")

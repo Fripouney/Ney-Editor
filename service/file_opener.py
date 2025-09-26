@@ -49,7 +49,7 @@ class FileOpener:
 
                 case "tagoff":
                     editor.text_area.tag_remove(value, index, tk.END)
-                
+
                 case "image":
                     self.insert_image_from_b64(editor, value, index)
 
@@ -74,8 +74,8 @@ class FileOpener:
         Decodes base64 image data and inserts the image at index
         """
         try:
-            bytes = base64.b64decode(b64_data)
-            image = Image.open(io.BytesIO(bytes))
+            image_bytes = base64.b64decode(b64_data)
+            image = Image.open(io.BytesIO(image_bytes))
             photo_image = ImageTk.PhotoImage(image)
             editor.image_references.append(photo_image)
             editor.image_data_map.append(b64_data)

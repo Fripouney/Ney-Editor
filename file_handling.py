@@ -1,9 +1,7 @@
 import os
 import tkinter as tk
 import json
-import base64
 from tkinter import filedialog, messagebox
-from PIL import Image, ImageTk
 from utils import Utils
 from service.file_opener import FileOpener
 from service.error_handler import ErrorHandler
@@ -23,7 +21,10 @@ class FileHandling:
                 content = []
                 image_counter = 0
 
-                for item in editor.text_area.dump(1.0, tk.END, tag=True, text=True, mark=True, image=True)[:-1]:
+                for item in editor.text_area.dump(
+                    1.0, tk.END,
+                    tag=True, text=True, mark=True, image=True
+                )[:-1]:
                     key, value, index = item
 
                     if key == "image":
