@@ -145,13 +145,6 @@ class FileHandling:
         if not file_path:
             return
 
-        # try:
-        #     pil_image = Image.open(file_path)
-        # except Exception as e:
-        #     messagebox.showerror("Erreur", f"Impossible d'ouvrir l'image : {e}")
-        #     return
-
-        # image = ImageTk.PhotoImage(pil_image)
         inserter = ImageInserter(editor.text_area, file_path)
         image_data = inserter.insert_image()
         editor.text_area = inserter.text_area
