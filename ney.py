@@ -22,7 +22,8 @@ class NeyEditor:
         self.text_area = tk.Text(self.root, font="Arial", wrap=tk.WORD, undo=True)
         self.status_bar = tk.Text(self.root, height=1, bd=0, bg="lightgrey", state="disabled")
         self.current_file = None
-        self.image_refs = []  # prevents garbage collection (this is atrocious)
+        self.image_references = []  # prevents garbage collection
+        self.image_data_map = []  # store base64 image data for saving
 
     def build_root(self):
         """

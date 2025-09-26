@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 import json
+import base64
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 from utils import Utils
@@ -19,15 +20,31 @@ class FileHandling:
         """
         if editor.current_file:
             if editor.current_file.endswith(".ney"):
-                content = editor.text_area.dump(1.0, tk.END)
-                content.pop(-1) # Remove the extra /n
+                content = []
+                image_counter = 0
 
-                json_content = [
-                    {"key": key, "value": value, "index": index}
-                    for key, value, index in content
-                ]
-                with open(editor.current_file, 'w', encoding='utf-8') as file:
-                    json.dump(json_content, file, indent=4)
+                for item in editor.text_area.dump(1.0, tk.END, tag=True, text=True, mark=True, image=True)[:-1]:
+                    key, value, index = item
+
+                    if key == "image":
+
+                        if hasattr(editor, 'image_data_map') and image_counter < len(editor.image_data_map):
+                            base64_data = editor.image_data_map[image_counter]
+                            content.append({
+                                "key": "image", 
+                                "value": base64_data, 
+                                "index": str(index)
+                            })
+                            image_counter += 1
+                    elif key in ["text", "tagon", "tagoff", "mark"]:
+                        content.append({
+                            "key": key, 
+                            "value": value, 
+                            "index": str(index)
+                        })
+
+                with open(editor.current_file, "w") as file:
+                    json.dump(content, file, indent=4)
 
             else:
                 with open(editor.current_file, 'w', encoding='utf-8') as file:
@@ -128,17 +145,18 @@ class FileHandling:
         if not file_path:
             return
 
-        try:
-            pil_image = Image.open(file_path)
-        except Exception as e:
-            messagebox.showerror("Erreur", f"Impossible d'ouvrir l'image : {e}")
-            return
+        # try:
+        #     pil_image = Image.open(file_path)
+        # except Exception as e:
+        #     messagebox.showerror("Erreur", f"Impossible d'ouvrir l'image : {e}")
+        #     return
 
-        image = ImageTk.PhotoImage(pil_image)
-        inserter = ImageInserter(editor.text_area, image)
-        inserter.insert_image()
+        # image = ImageTk.PhotoImage(pil_image)
+        inserter = ImageInserter(editor.text_area, file_path)
+        image_data = inserter.insert_image()
         editor.text_area = inserter.text_area
-        editor.image_refs.append(image)
+        editor.image_data_map.append(image_data)
+        editor.image_references.append(inserter.image)
 
     @staticmethod
     def is_valid_file_format(file_name):

@@ -1,5 +1,8 @@
 import tkinter as tk
 import json
+import base64
+import io
+from PIL import Image, ImageTk
 from service.error_handler import ErrorHandler
 from service.text_formatter import TextFormatter
 
@@ -46,6 +49,9 @@ class FileOpener:
 
                 case "tagoff":
                     editor.text_area.tag_remove(value, index, tk.END)
+                
+                case "image":
+                    self.insert_image_from_b64(editor, value, index)
 
 
     def handle_tags(self, editor, value, index):
@@ -62,3 +68,18 @@ class FileOpener:
         content = self.file.read()
         editor.text_area.delete(1.0, tk.END)
         editor.text_area.insert(tk.END, content)
+
+    def insert_image_from_b64(self, editor, b64_data, index):
+        """
+        Decodes base64 image data and inserts the image at index
+        """
+        try:
+            bytes = base64.b64decode(b64_data)
+            image = Image.open(io.BytesIO(bytes))
+            photo_image = ImageTk.PhotoImage(image)
+            editor.image_references.append(photo_image)
+            editor.image_data_map.append(b64_data)
+            editor.text_area.image_create(index, image=photo_image)
+        except Exception as e:
+            ErrorHandler.error_image_load(editor.status_bar)
+            print(f"Error loading image: {e}")
