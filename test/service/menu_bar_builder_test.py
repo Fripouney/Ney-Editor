@@ -1,12 +1,13 @@
 import tkinter as tk
 from service.menu_bar_builder import MenuBarBuilder
+from ney import NeyEditor
 
 class TestMenubarBuilder():
     def instance(self):
         """
         Creates root widget for testing
         """
-        return MenuBarBuilder(tk.Tk())
+        return MenuBarBuilder(NeyEditor())
     
     def test_build_file_menu(self):
         """
